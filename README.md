@@ -1,53 +1,67 @@
 # Andrii Mieshkov — Portfolio
 
-Personal portfolio site. React 19 + TypeScript + Vite, hand-written CSS, no UI framework.
-Deployed to GitHub Pages by GitHub Actions.
+**Live:** [andriimieshkov.github.io](https://andriimieshkov.github.io/)
 
-## Features
+Personal portfolio of Andrii Mieshkov, a Software Engineer based in Kraków. The site presents selected commercial work, experience and skills in English and Polish. One of the projects is a real HTML5 playable ad that you can play right on the page.
 
-- EN / PL language switch (auto-detected from the browser, `?lang=pl` also works)
-- VIEN case study with a desktop/mobile screenshot gallery, swipe support and a lightbox
-- **Card Duel**: the real HTML5 playable ad (PixiJS) embedded and playable in a phone frame. It loads on click, so its 3.5 MB never delays the page
-- Responsive WebP images (`srcset`) with inline blur placeholders, lazy-loaded with no layout shift
-- Responsive from 320 px phones to wide desktops; respects `prefers-reduced-motion`
-- Downloadable CV, JSON-LD `Person` schema, Open Graph tags
+## What's inside
 
-## Develop
+- **VIEN — Client Personal Account.** A full-stack health-program cabinet (Vue 3, Fastify, PostgreSQL, Redis), shown through a desktop / mobile screenshot gallery with a lightbox.
+- **Card Duel.** An HTML5 playable ad (PixiJS) built at PlayToMax, embedded and playable in a phone frame.
+- Experience, skills, education, languages, interests and contact details.
 
-```bash
-npm install
-npm run dev       # http://localhost:5173
-npm run build     # type-check + production build into dist/
-npm run preview   # serve dist/
+## How it's built
+
+The site is a single-page app with no UI framework or CSS library. Layout, animation and components are hand-written.
+
+| Area | Choice |
+| --- | --- |
+| UI | React 19, TypeScript (strict) |
+| Build | Vite |
+| Styling | Plain CSS with design tokens, fluid type (`clamp`), CSS Grid "bento" layout |
+| i18n | Small typed context: every string is defined once per language in `src/data/content.ts`, and the compiler checks that EN and PL match |
+| Hosting | GitHub Pages, deployed by GitHub Actions |
+
+### Details worth a look
+
+- **Performance**
+  - Screenshots are served as responsive WebP (`srcset` / `sizes`) with intrinsic dimensions and tiny inline blur placeholders, so nothing shifts while loading.
+  - First load on mobile is about 160 KB.
+  - The 3.6 MB game build loads only when the visitor presses Play.
+- **Embedded game lifecycle (`Playable.tsx`)**
+  - The game runs in a same-origin iframe.
+  - It pauses its render loop and audio when scrolled out of view.
+  - On restart it releases its WebGL context, so contexts never pile up.
+  - It falls back to Canvas rendering when WebGL is unavailable.
+- **Smooth scrolling**
+  - Scroll and pointer handlers are throttled with `requestAnimationFrame`.
+  - Scroll handlers write only to the elements they need, never to root CSS variables.
+  - Animations stick to `transform` and `opacity`.
+- **Accessibility**
+  - Semantic landmarks and headings, a skip link, visible focus states and labelled icon buttons.
+  - The lightbox is a native `<dialog>` and works with the keyboard.
+  - `prefers-reduced-motion` is respected.
+- **Responsive layout:** tested from 320 px phones up to 1920 px desktops, with no horizontal overflow.
+- **SEO:** meta and Open Graph tags plus JSON-LD `Person` structured data.
+
+## Structure
+
+```
+src/
+  data/content.ts         all text (EN / PL) and profile links
+  components/             Hero, Work, Gallery, Playable, Experience, Skills, About, Contact…
+  hooks/                  scroll-reveal, active-section tracking, cursor spotlight
+  styles.css              design tokens and all styles
+public/
+  img/                    optimized WebP screenshots
+  play/card-duel/         playable ad build
+scripts/optimize_images.py   screenshot → responsive WebP + blur placeholder pipeline
+.github/workflows/        build & deploy to GitHub Pages
 ```
 
-## Edit content
+## Contact
 
-All text lives in `src/data/content.ts` (both `en` and `pl`). Contact links are in `profile` at the top of that file.
+- Email: [andrii.mieshkov@gmail.com](mailto:andrii.mieshkov@gmail.com)
+- LinkedIn: [linkedin.com/in/andrii-mieshkov](https://www.linkedin.com/in/andrii-mieshkov)
 
-## Images
-
-Raw screenshots are converted to WebP sets with:
-
-```bash
-npm run images -- <screenshots_dir> <game_poster.png>
-```
-
-This writes `public/img/*.webp` and `src/data/images.generated.json` (sizes + blur placeholders). It needs Python 3 and Pillow.
-
-## Game build
-
-`public/play/card-duel/` is a portfolio-specific `default` build of Card Duel, made from the last committed version of the game project with three changes:
-
-- `src/App.js` imports `pixi.js-legacy`, so the game falls back to Canvas when WebGL is unavailable
-- `googlePlayUrl` / `appStoreUrl` in `src/config.js` are empty
-- `src/index.js` wraps `callSDK('download')`, so the CTA stays inside the ad instead of opening a store tab
-
-Rebuild with `npm run build -- -p default` in the game project, then copy `dist/default/*` here.
-
-## Deploy to GitHub Pages
-
-1. Create a repo: either `AndriiMieshkov.github.io` (site at the root) or any name such as `portfolio` (site at `/portfolio/`). The build uses relative paths, so both work.
-2. Push this folder to the `main` branch.
-3. In the repo go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
-4. Each push to `main` runs `.github/workflows/deploy.yml` and publishes the site.
+Card Duel is shown as an example of work done at PlayToMax. All other code in this repository is by Andrii Mieshkov.
