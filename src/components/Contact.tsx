@@ -40,11 +40,6 @@ export function Contact() {
 
           <ul className="contact__links">
             <li>
-              <a href={profile.phoneHref}>
-                <Icon name="phone" /> {profile.phone}
-              </a>
-            </li>
-            <li>
               <a href={profile.linkedin} target="_blank" rel="noreferrer">
                 <Icon name="linkedin" /> {profile.linkedinLabel}
               </a>

@@ -3,8 +3,6 @@ export type Lang = 'en' | 'pl';
 export const profile = {
   name: 'Andrii Mieshkov',
   email: 'andrii.mieshkov@gmail.com',
-  phone: '+48 792 360 319',
-  phoneHref: 'tel:+48792360319',
   github: 'https://github.com/AndriiMieshkov',
   githubLabel: 'github.com/AndriiMieshkov',
   linkedin: 'https://www.linkedin.com/in/andrii-mieshkov',
@@ -353,7 +351,7 @@ export const content: Record<Lang, Content> = {
     contact: {
       eyebrow: 'Contact',
       title: 'Let’s build something good.',
-      lead: 'Looking for a frontend or full-stack role in Kraków or remote. The fastest way to reach me is email.',
+      lead: 'Looking for a Software Engineer, frontend or full-stack role in Kraków or remote. The fastest way to reach me is email.',
       copy: 'Copy',
       copied: 'Copied!',
       location: 'Kraków, Poland',
@@ -589,7 +587,7 @@ export const content: Record<Lang, Content> = {
     contact: {
       eyebrow: 'Kontakt',
       title: 'Zbudujmy coś dobrego.',
-      lead: 'Szukam roli frontend lub full-stack w Krakowie lub zdalnie. Najszybciej odpowiem na e-mail.',
+      lead: 'Szukam roli Software Engineer, frontend lub full-stack w Krakowie lub zdalnie. Najszybciej odpowiem na e-mail.',
       copy: 'Kopiuj',
       copied: 'Skopiowano!',
       location: 'Kraków, Polska',
